@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Recipe from './components/recipe.js';
+
+import { fetchRecipes } from './store/slices/recipesSlice.js';
 
 function getData() {
 	return fetch('http://localhost:3000/api/recipes')
@@ -8,21 +11,22 @@ function getData() {
 }
 
 function App() {
-	const [data, setData] = useState('');
+	const { recipes, isLoading } = useSelector(state => state.recipes);
+
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getData()
-			.then(res => setData(JSON.parse(res.data[0].data)))
-	}, []);
+		dispatch(fetchRecipes());
+	}, [dispatch]);
 
-	if (!data) {
+	if (isLoading) {
 		return (
 			<h1>Loading</h1>
 		);
 	}
 
 	return (<div>
-		<Recipe data={data}/>
+		<Recipe data={JSON.parse(recipes.data[0].data)}/>
 	</div>);
 }
 

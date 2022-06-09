@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import Ingredients from './ingredients.js';
 import Directions from './directions.js';
@@ -11,20 +11,17 @@ const RecipeDiv = styled.div`
 	color: pink;
 `;
 
-Recipe.propTypes = {
-	data: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.object
-	])
-};
-
-function Recipe({data}) {
+function Recipe() {
+	const { recipes } = useSelector(state => state.recipes);
+	
+	const name= recipes.data[0].name;
+	
 	return (<RecipeDiv>
-		<h2>{data.name}</h2>
-		<Summary data={data.summary}/>
-		<Ingredients ingredients={data.ingredients}/>
-		<Directions directions={data.directions}/>
-		<Notes notes={data.notes} />
+		<h2>{name}</h2>
+		<Summary />
+		<Ingredients />
+		<Directions />
+		<Notes />
 	</RecipeDiv>
 	);
 }

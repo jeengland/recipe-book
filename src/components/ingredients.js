@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const IngredientItem = styled.li`
 	color: green;
@@ -36,7 +37,11 @@ Ingredients.propTypes = {
 	)
 };
 
-function Ingredients({ ingredients }) {
+function Ingredients() {
+	const { recipes } = useSelector(state => state.recipes);
+
+	const ingredients = JSON.parse(recipes.data[0].ingredients);
+
 	return(
 		<IngredientSection>
 			<h3>Ingredients</h3	>

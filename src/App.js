@@ -1,8 +1,11 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
 
-import Recipe from './components/recipe.js';
+import Recipe from './components/recipe/recipe.js';
+import RecipeForm from './components/recipeForm/recipeForm.js';
+import Wrapper from './components/baseComponents/wrapper.js';
 
 import { fetchRecipes } from './store/slices/recipesSlice.js';
 
@@ -21,9 +24,15 @@ function App() {
 		);
 	}
 
-	return (<div>
-		<Recipe />
-	</div>);
+	return (
+		<Routes>
+			<Route path='/' element={<Wrapper/>}>
+				<Route path='/' element={<Recipe />}/>
+				<Route path='/recipe' element={<Recipe />} />
+				<Route path='/recipeForm' element={<RecipeForm />} />
+			</Route>
+		</Routes>
+	);
 }
 
 export default App;

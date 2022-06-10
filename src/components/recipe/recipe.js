@@ -16,13 +16,14 @@ function Recipe() {
 	
 	const name= recipes.data[0].name;
 	
-	return (<RecipeDiv>
-		<h2>{name}</h2>
-		<Summary />
-		<Ingredients />
-		<Directions />
-		<Notes />
-	</RecipeDiv>
+	return (
+		<RecipeDiv>
+			<h2>{name}</h2>
+			<Summary />
+			<Ingredients />
+			<Directions />
+			<Notes />
+		</RecipeDiv>
 	);
 }
 

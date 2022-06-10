@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 
-import { getHoursMinutes } from '../utils/timeUtils.js';
+import { getHoursMinutes } from '../../utils/timeUtils.js';
 
 const SummarySection = styled.section`
 	color: orange;

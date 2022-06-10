@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-
+import { useSelector } from 'react-redux';
 
 const DirectionItem = styled.li`
 	color: purple;
@@ -29,7 +29,11 @@ Directions.propTypes = {
 	)
 };
 
-function Directions({ directions }) {
+function Directions() {
+	const { recipes } = useSelector(state => state.recipes);
+
+	const directions = JSON.parse(recipes.data[0].directions);
+
 	return(
 		<DirectionsSection>
 			<h3>Directions</h3	>

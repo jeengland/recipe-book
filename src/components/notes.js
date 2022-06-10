@@ -1,18 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const NotesSection = styled.section`
 	color: goldenrod;
 `;
 
-Notes.propTypes = {
-	notes: PropTypes.arrayOf(
-		PropTypes.string
-	)
-};
+function Notes() {
+	const { recipes } = useSelector(state => state.recipes);
 
-function Notes({ notes }) {
+	const notes = JSON.parse(recipes.data[0].notes);
+
 	if (notes.length === 0) {
 		return undefined;
 	}

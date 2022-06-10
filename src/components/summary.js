@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 
 import { getHoursMinutes } from '../utils/timeUtils.js';
 
@@ -14,7 +15,11 @@ Summary.propTypes = {
 	)
 };
 
-function Summary({data}) {
+function Summary() {
+	const { recipes } = useSelector(state => state.recipes);
+
+	const data = recipes.data[0].summary;
+	
 	const totalTime = (data?.cookTime || 0) + (data?.prepTime || 0) + (data?.additionalTime || 0);
 
 	return (

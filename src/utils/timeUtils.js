@@ -66,8 +66,12 @@ function timeStampToMinutes(text) {
 }
 
 function minutesToTimeStamp(minutes) {
-	const minuteValue = minutes % 60,
+	let minuteValue = minutes % 60,
 		hourValue = (minutes - minuteValue) / 60;
+
+	if (minuteValue === 0) {
+		minuteValue = '00';
+	}
 
 	return `${hourValue}:${minuteValue}`;
 }

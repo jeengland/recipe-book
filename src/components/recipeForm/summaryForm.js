@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
-import { hasOneOrZeroColons, validateTimestamp } from '../../utils/timeUtils';
+import PropTypes from 'prop-types';
+
+import { minutesToTimeStamp, timeStampToMinutes, validateTimestamp } from '../../utils/timeUtils';
 
 const Time = styled.input`
 	color: goldenrod
@@ -19,17 +21,31 @@ function TimeInput() {
 		} else {
 			setErr(err);
 		}
+
+		return;
+	};
+
+	const incrementTime = (increment) => {
+		var currentTime = timeStampToMinutes(time);
+
+		currentTime +=  increment;
+
+		setTime(minutesToTimeStamp(currentTime));
+
+		return;
 	};
 
 	const handleKeyDown = (e) => {
 		switch (e.keyCode) {
 		case 38:
-			console.log('up key');
+			incrementTime(15);
 			break;
 		case 40:
-			console.log('down key');
+			incrementTime(-15);
 			break;
 		}
+
+		return;
 	};
 
 	return (
@@ -43,6 +59,11 @@ function TimeInput() {
 const SummaryFormWrapper = styled.fieldset`
 	color: pink;
 `;
+
+SummaryForm.propTypes = {
+	state: PropTypes.object,
+	setState: PropTypes.func
+};
 
 function SummaryForm({ state, setState }) {
 	return (

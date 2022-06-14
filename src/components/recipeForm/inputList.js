@@ -49,7 +49,11 @@ InputList.propTypes = {
 	schema: PropTypes.objectOf(
 		PropTypes.string
 	),
-	state: PropTypes.array,
+	state: PropTypes.arrayOf(
+		PropTypes.objectOf(
+			PropTypes.string
+		)
+	),
 	setState: PropTypes.func
 };
 

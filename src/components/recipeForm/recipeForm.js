@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import InputList from './inputList.js';
 
 const RecipeFormWrapper = styled.form`
 	color: pink;
 `;
 
 function RecipeForm() {
+	const [ingredients, setIngredients] = useState([{amount: '', name: ''}]);
+
 	return (
 		<RecipeFormWrapper>
-			<h1>This is the recipe form</h1>
+			<InputList listType='ingredients' state={ingredients} setState={setIngredients} schema={{amount: '', name: ''}}/>
 		</RecipeFormWrapper>
 	);
 }

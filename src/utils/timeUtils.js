@@ -25,25 +25,25 @@ function validateTimestamp(timestamp) {
 
 	if (!reg.test(timestamp)) {
 		console.error('Invalid timestamp: timestamp may only have colons or numbers');
-		return {err: 'Invalid timestamp: timestamp may only have colons or numbers'};
+		return {err: 'Times may only have colons or numbers'};
 	}
 
 	const timestampSplit = timestamp.split(':');
 
 	if (timestampSplit.length > 2) {
 		console.error('Invalid timestamp: timestamp may only have one colon');
-		return {err: 'Invalid timestamp: timestamp may only have one colon'};
+		return {err: 'Time may only have one colon'};
 	}
 
 	if (timestampSplit.length > 1) {
 		if (parseInt(timestampSplit[1]) > 59) {
 			console.error('Invalid timestamp: minutes value may not exceed 60');
-			return {err: 'Invalid timestamp: minutes value may not exceed 60'};
+			return {err: 'Minutes value may not exceed 60'};
 		}
 
 		if (timestampSplit[1].length > 2) {
 			console.error('Invalid timestamp: minutes may not be more than three characters');
-			return {err: 'Invalid timestamp: minutes may not be more than three characters'};
+			return {err: 'Minutes may not be more than three characters'};
 		}
 	}
 

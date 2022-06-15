@@ -1,74 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-import { minutesToTimeStamp, timeStampToMinutes, validateTimestamp } from '../../utils/timeUtils';
-
-const Time = styled.input`
-	color: goldenrod
-`;
-
-function TimeInput() {
-	const [time, setTime] = useState('0:00');
-	const [err, setErr] = useState('');
-
-	const handleChange = (e) => {
-		const err = validateTimestamp(e.target.value).err;
-
-		if (e.target.value === '' || !err) {
-			setTime(e.target.value);
-			setErr('');
-		} else {
-			setErr(err);
-		}
-
-		return;
-	};
-
-	const incrementTime = (increment) => {
-		var currentTime = timeStampToMinutes(time);
-
-		currentTime +=  increment;
-
-		setTime(minutesToTimeStamp(currentTime));
-
-		return;
-	};
-
-	const handleKeyDown = (e) => {
-		switch (e.keyCode) {
-		case 38:
-			incrementTime(15);
-			break;
-		case 40:
-			incrementTime(-15);
-			break;
-		}
-
-		return;
-	};
-
-	return (
-		<>
-			{ err ? <p>{err}</p> : undefined}
-			<Time type='text' value={time} onChange={handleChange} onKeyDown={handleKeyDown}/>
-		</>
-	);
-}
+import TimeInput from '../baseComponents/timeInput.js';
 
 const SummaryFormWrapper = styled.fieldset`
 	color: pink;
 `;
 
 SummaryForm.propTypes = {
-	state: PropTypes.object,
+	state: PropTypes.objectOf(
+		PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.number
+		])
+	),
 	setState: PropTypes.func
 };
 
 function SummaryForm({ state, setState }) {
+	const handleServingsChange = (e) => {
+		if (e.target.value < 0) {
+			console.error('Servings cannot be less than 0');
+			return;
+		}
+
+		let newState = {...state};
+
+		newState.servings = e.target.value;
+
+		setState(newState);
+	};
+
 	return (
 		<SummaryFormWrapper>
-			<TimeInput/>
+			<TimeInput name='prepTime' label='Prep Time' state={state} setState={setState}/>
+			<TimeInput name='cookTime' label='Cook Time' state={state} setState={setState}/>
+			<TimeInput name='additionalTime' label='Additional Time' state={state} setState={setState}/>
+			<label htmlFor='servings'>Servings</label>
+			<input name='servings' type='number' value={state.servings} onChange={handleServingsChange}/>
 		</SummaryFormWrapper>
 	);
 }

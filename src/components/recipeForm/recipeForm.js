@@ -8,7 +8,7 @@ const RecipeFormWrapper = styled.form`
 `;
 
 function RecipeForm() {
-	const [summary, setSummary] = useState({prepTime: 0, cookTime: 0, additionalTime: 0, servings: 0});
+	const [summary, setSummary] = useState({prepTime: '0:00', cookTime: '0:00', additionalTime: '0:00', servings: 0});
 	const [ingredients, setIngredients] = useState([{amount: '', name: ''}]);
 	const [directions, setDirections] = useState([{text: ''}]);
 	const [notes, setNotes] = useState([{text: ''}]);

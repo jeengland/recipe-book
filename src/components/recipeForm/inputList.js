@@ -2,6 +2,12 @@ import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
+import { TextField, InputAdornment, IconButton, Card, CardHeader, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+
+import { sentenceCase } from '../../utils/textUtils.js';
+
 
 const InputWrapper = styled.li`
 	color: red;
@@ -15,34 +21,40 @@ Input.propTypes = {
 		PropTypes.string
 	),
 	handleChange: PropTypes.func,
-	handleRemove: PropTypes.func
+	handleRemove: PropTypes.func,
+	fullWidth: PropTypes.bool
 };
 
-function Input({ index, name, value, handleChange, handleRemove }) {
+function Input({ index, name, value, handleChange, handleRemove, fullWidth=false }) {
 	const fields = Object.keys(value);
 
 	return (
 		<InputWrapper key={name}>
 			{
-				fields.map(field => {
+				fields.map((field, i) => {
 					const fieldName = name + '-' + field;
+
+					let deleteable = {};
+
+					if (i === fields.length - 1) {
+						deleteable = {
+							endAdornment:
+							<InputAdornment position="end">
+								<IconButton onClick={() => handleRemove(index)}>
+									<DeleteIcon/>
+								</IconButton>
+							</InputAdornment>
+						};
+					}
 					
 					return (
-						<React.Fragment key={fieldName}>
-							<label htmlFor={fieldName}>{field}</label>
-							<input type='text' name={fieldName} id={fieldName} value={value[field]} onChange={(e) => handleChange(index, field, e)} />
-						</React.Fragment>
+						<TextField InputProps={deleteable} fullWidth={fullWidth} key={fieldName} name={fieldName} label={sentenceCase(field)} value={value[field]} onChange={(e) => handleChange(index, field, e)}/>
 					);
 				})
 			}
-			<button type='button' onClick={() => handleRemove(index)}>-</button>
 		</InputWrapper>
 	);
 }
-
-const InputListWrapper = styled.fieldset`
-	color: pink;
-`;
 
 InputList.propTypes = {
 	listType: PropTypes.string,
@@ -55,10 +67,12 @@ InputList.propTypes = {
 		)
 	),
 	setState: PropTypes.func,
-	error: PropTypes.string
+	error: PropTypes.string,
+	blurb: PropTypes.string,
+	fullWidth: PropTypes.bool
 };
 
-function InputList({ listType, schema, state, setState, error }) {
+function InputList({ listType, schema, state, setState, error, blurb, fullWidth=false }) {
 	const addInput = () => {
 		const values = [...state];
 
@@ -83,12 +97,12 @@ function InputList({ listType, schema, state, setState, error }) {
 	};
 
 	return (
-		<InputListWrapper name={listType}>
-			{error ? <p>{error}</p> : undefined } 
-			<ul style={{paddingLeft: 0}}>
+		<Card>
+			<CardHeader title={sentenceCase(listType)} subheader={blurb} sx={{paddingBottom: 0}}/>
+			<ul style={{paddingLeft: 0, margin: '.75rem'}}>
 				{state.map((value, index) => {
 					const name = listType + '-' + index;
-				
+					
 					return (
 						<Input 
 							key={name} 
@@ -98,12 +112,17 @@ function InputList({ listType, schema, state, setState, error }) {
 							schema={schema}
 							handleChange={handleChange} 
 							handleRemove={handleRemove}
+							fullWidth={fullWidth}
 						/>
 					);
 				})}
 			</ul>
-			<button type='button' onClick={addInput}>+</button>
-		</InputListWrapper>
+			<IconButton color='info' type='button' onClick={addInput} sx={{paddingTop: 0}}>
+				<AddIcon />
+			</IconButton>
+			{error ? <Typography color='#d32f2f'>{error}</Typography> : undefined } 
+		</Card>
+
 	);
 }
 

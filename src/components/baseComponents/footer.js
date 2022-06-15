@@ -14,7 +14,7 @@ Footer.propTypes = {
 
 function Footer({ pages }) {
 	return (
-		<AppBar position='static' sx={{display: 'flex', flexDirection: 'row', paddingX: '1.5rem', paddingY: '1rem', marginTop: 'calc(5% + 60px)', bottom: 0}}>
+		<AppBar position='static' sx={{display: 'flex', flexDirection: 'row', paddingX: '1.5rem', paddingY: '1rem', marginTop: 'calc(5% + 60px)'}}>
 			<Box component='footer'>
 				{pages.map(page => {
 					return (

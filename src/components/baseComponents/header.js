@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, Typography } from '@mui/material';
+
 import EggAltIcon from '@mui/icons-material/EggAlt';
 
 Header.propTypes = {
@@ -13,9 +14,11 @@ Header.propTypes = {
 };
 
 function Header({ pages }) {
+	let navigate = useNavigate();
+
 	return (
 		<AppBar position='static' sx={{display: 'flex', flexDirection: 'row', padding: '1rem'}}>
-			<EggAltIcon fontSize='large' sx={{marginX: '1rem'}}/>
+			<EggAltIcon fontSize='large' sx={{marginX: '1rem'}} onClick={() => navigate('/')}/>
 			<Box component='nav'>
 				{pages.map(page => {
 					return (

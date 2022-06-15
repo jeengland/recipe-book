@@ -1,12 +1,8 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
 import TimeInput from '../baseComponents/timeInput.js';
-
-const SummaryFormWrapper = styled.fieldset`
-	color: pink;
-`;
+import { Card, CardHeader, TextField } from '@mui/material';
 
 SummaryForm.propTypes = {
 	state: PropTypes.objectOf(
@@ -33,13 +29,13 @@ function SummaryForm({ state, setState }) {
 	};
 
 	return (
-		<SummaryFormWrapper>
-			<TimeInput name='prepTime' label='Prep Time' state={state} setState={setState}/>
-			<TimeInput name='cookTime' label='Cook Time' state={state} setState={setState}/>
-			<TimeInput name='additionalTime' label='Additional Time' state={state} setState={setState}/>
-			<label htmlFor='servings'>Servings</label>
-			<input name='servings' type='number' value={state.servings} onChange={handleServingsChange}/>
-		</SummaryFormWrapper>
+		<Card>
+			<CardHeader title="Summary" subheader="Basic info about your recipe"/>
+			<TimeInput name='prepTime' state={state} setState={setState}/>
+			<TimeInput name='cookTime' state={state} setState={setState}/>
+			<TimeInput name='additionalTime' state={state} setState={setState}/>
+			<TextField name='servings' label='Servings' type='number' value={state.servings} onChange={handleServingsChange}/>
+		</Card>
 	);
 }
 

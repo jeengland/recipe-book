@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+
+import { Container } from '@mui/system';
+
 import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
+import { Button, TextField } from '@mui/material';
 
 const RecipeFormWrapper = styled.form`
 	color: pink;
@@ -62,19 +66,47 @@ function RecipeForm() {
 	};
 
 	return (
-		<>
+		<Container sx={{minHeight: '80vh', paddingY: '1rem'}}>
 			<RecipeFormWrapper onSubmit={handleSubmit}>
-				{errors.name ? <p>{errors.name}</p> : undefined } 
-				<label htmlFor='name'>Name</label>
-				<input type='text' name='name' value={name} onChange={(e) => setName(e.target.value)}></input>
+				<TextField 
+					fullWidth value={name} 
+					onChange={(e) => setName(e.target.value)} 
+					id='name' 
+					label='Recipe Name' 
+					variant='filled' 
+					error={errors.name} 
+					helperText={errors.name}
+				/>
 				<SummaryForm state={summary} setState={setSummary} />
-				<InputList listType='ingredients' state={ingredients} setState={setIngredients} schema={{amount: '', name: ''}} error={errors.ingredients}/>
-				<InputList listType='directions' state={directions} setState={setDirections} schema={{text: ''}} error={errors.directions}/>
-				<InputList listType='notes' state={notes} setState={setNotes} schema={{text: ''}}/>
-				<button type='submit'>Submit</button> 
+				<InputList 
+					listType='ingredients' 
+					state={ingredients} 
+					setState={setIngredients} 
+					schema={{amount: '', name: ''}}
+					error={errors.ingredients}
+					blurb='Amounts and names of all ingredients needed'
+				/>
+				<InputList 
+					listType='directions' 
+					state={directions} 
+					setState={setDirections} 
+					schema={{text: ''}} 
+					error={errors.directions} 
+					blurb='Everything needed to ensure a successful meal'
+					fullWidth
+				/>
+				<InputList 
+					listType='notes' 
+					state={notes} 
+					setState={setNotes} 
+					schema={{text: ''}} 
+					blurb='Anything else worth noting'
+					fullWidth
+				/>
+				<Button type='submit' variant='contained'>Submit</Button> 
 				{errors.general ? <p>{errors.general}</p> : undefined}
 			</RecipeFormWrapper>
-		</>
+		</Container>
 	);
 }
 

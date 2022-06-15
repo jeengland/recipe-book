@@ -1,15 +1,12 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
+
+import { Container } from '@mui/system';
 
 import Ingredients from './ingredients.js';
 import Directions from './directions.js';
 import Summary from './summary.js';
 import Notes from './notes.js';
-
-const RecipeDiv = styled.div`
-	color: pink;
-`;
 
 function Recipe() {
 	const { recipes } = useSelector(state => state.recipes);
@@ -17,13 +14,13 @@ function Recipe() {
 	const name= recipes.data[0].name;
 	
 	return (
-		<RecipeDiv>
+		<Container>
 			<h2>{name}</h2>
 			<Summary />
 			<Ingredients />
 			<Directions />
 			<Notes />
-		</RecipeDiv>
+		</Container>
 	);
 }
 

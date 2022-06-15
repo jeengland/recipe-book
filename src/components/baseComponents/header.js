@@ -1,19 +1,34 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { AppBar, Box, Button, Typography } from '@mui/material';
+import EggAltIcon from '@mui/icons-material/EggAlt';
 
-const HeaderWrapper = styled.header`
-	color: grey;
-`;
+Header.propTypes = {
+	pages: PropTypes.arrayOf(
+		PropTypes.objectOf(
+			PropTypes.string
+		)
+	)
+};
 
-function Header() {
+function Header({ pages }) {
 	return (
-		<HeaderWrapper>
-			<nav>
-				<Link to='/recipe'>Recipe</Link>
-				<Link to='/recipeForm'>Recipe Form</Link>
-			</nav>
-		</HeaderWrapper>
+		<AppBar position='static' sx={{display: 'flex', flexDirection: 'row', padding: '1rem'}}>
+			<EggAltIcon fontSize='large' sx={{marginX: '1rem'}}/>
+			<Box component='nav'>
+				{pages.map(page => {
+					return (
+						<Button variant='text' sx={{color: 'white'}} key={`header-link-${page.text}`} component={Link} to={page.href}>
+							<Typography>
+								{page.text}
+							</Typography>
+						</Button>
+					);
+				}
+				)}
+			</Box>
+		</AppBar>
 	);
 }
 

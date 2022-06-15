@@ -54,10 +54,11 @@ InputList.propTypes = {
 			PropTypes.string
 		)
 	),
-	setState: PropTypes.func
+	setState: PropTypes.func,
+	error: PropTypes.string
 };
 
-function InputList({ listType, schema, state, setState }) {
+function InputList({ listType, schema, state, setState, error }) {
 	const addInput = () => {
 		const values = [...state];
 
@@ -83,6 +84,7 @@ function InputList({ listType, schema, state, setState }) {
 
 	return (
 		<InputListWrapper name={listType}>
+			{error ? <p>{error}</p> : undefined } 
 			<ul style={{paddingLeft: 0}}>
 				{state.map((value, index) => {
 					const name = listType + '-' + index;

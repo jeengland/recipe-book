@@ -18,7 +18,9 @@ Summary.propTypes = {
 function Summary() {
 	const { recipes } = useSelector(state => state.recipes);
 
-	const data = recipes.data[0].summary;
+	const data = JSON.parse(recipes.data[0].summary);
+
+	console.log(data);
 	
 	const totalTime = (data?.cookTime || 0) + (data?.prepTime || 0) + (data?.additionalTime || 0);
 
@@ -28,7 +30,7 @@ function Summary() {
 			{data.cookTime ? <p>Cook time: {getHoursMinutes(data.cookTime)}</p> : undefined}
 			{data.additionalTime ? <p>Additional time: {getHoursMinutes(data.additionalTime)}</p> : undefined}
 			{totalTime ? <p>Total time: {getHoursMinutes(totalTime)}</p> : undefined}
-			{data.servings}
+			{data.servings ? <p>Servings: {data.servings}</p> : undefined}
 		</SummarySection>
 	);
 }

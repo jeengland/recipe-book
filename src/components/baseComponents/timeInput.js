@@ -48,7 +48,7 @@ function TimeInput({ name, state, setState }) {
 		}
 
 		if (increment > 0) {
-			currentTime = Math.ceil((currentTime + increment) / increment) * increment;
+			currentTime = Math.floor((currentTime + increment) / increment) * increment;
 		}
 
 		if (currentTime <= 0) {
@@ -67,12 +67,21 @@ function TimeInput({ name, state, setState }) {
 	};
 
 	const handleKeyDown = (e) => {
+		const shift = e.shiftKey;
 		switch (e.keyCode) {
 		case 38:
-			incrementTime(15);
+			if (shift) {
+				incrementTime(1);
+			} else {
+				incrementTime(15);
+			}
 			break;
 		case 40:
-			incrementTime(-15);
+			if (shift) {
+				incrementTime(-1);
+			} else {
+				incrementTime(-15);
+			}
 			break;
 		}
 

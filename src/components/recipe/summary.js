@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 
-import { getHoursMinutes } from '../../utils/timeUtils.js';
+import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 
-const SummarySection = styled.section`
-	color: orange;
-`;
+import { getHoursMinutes } from '../../utils/timeUtils.js';
 
 Summary.propTypes = {
 	data: PropTypes.objectOf(
@@ -20,19 +17,20 @@ function Summary() {
 
 	const data = JSON.parse(recipes.data[0].summary);
 
-	console.log(data);
-	
 	const totalTime = (data?.cookTime || 0) + (data?.prepTime || 0) + (data?.additionalTime || 0);
 
 	return (
-		<SummarySection>
-			{data.prepTime ? <p>Prep time: {getHoursMinutes(data.prepTime)}</p> : undefined}
-			{data.cookTime ? <p>Cook time: {getHoursMinutes(data.cookTime)}</p> : undefined}
-			{data.additionalTime ? <p>Additional time: {getHoursMinutes(data.additionalTime)}</p> : undefined}
-			{totalTime ? <p>Total time: {getHoursMinutes(totalTime)}</p> : undefined}
-			{data.servings ? <p>Servings: {data.servings}</p> : undefined}
-			{data.preheat ? <p>Preheat Temperature: {data.preheat}°</p> : undefined}
-		</SummarySection>
+		<Card sx={{p: '.5rem'}}>
+			<CardHeader title='Recipe Summary'/>
+			<CardContent fontSize='large' sx={{pt: '.2rem', pl: '2.5rem'}}>
+				{data.prepTime ? <Typography fontSize='large' sx={{py: '.3rem'}}>Prep time: {getHoursMinutes(data.prepTime)}</Typography> : undefined}
+				{data.cookTime ? <Typography fontSize='large' sx={{py: '.3rem'}}>Cook time: {getHoursMinutes(data.cookTime)}</Typography> : undefined}
+				{data.additionalTime ? <Typography fontSize='large' sx={{py: '.3rem'}}>Additional time: {getHoursMinutes(data.additionalTime)}</Typography> : undefined}
+				{totalTime ? <Typography fontSize='large' sx={{py: '.3rem'}}>Total time: {getHoursMinutes(totalTime)}</Typography> : undefined}
+				{data.servings ? <Typography fontSize='large' sx={{py: '.3rem'}}>Servings: {data.servings}</Typography> : undefined}
+				{data.preheat ? <Typography fontSize='large' sx={{py: '.3rem'}}>Preheat Temperature: {data.preheat}°</Typography> : undefined}
+			</CardContent>
+		</Card>
 	);
 }
 

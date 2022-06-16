@@ -7,9 +7,6 @@ import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
 import { Button, TextField, Typography } from '@mui/material';
 
-const RecipeFormWrapper = styled.form`
-	color: pink;
-`;
 
 function RecipeForm() {
 	const [name, setName] = useState(''),
@@ -62,12 +59,13 @@ function RecipeForm() {
 			return;
 		}
 
+		// #TODO: Add real submit lol
 		console.log('submit', bundle);
 	};
 
 	return (
 		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
-			<RecipeFormWrapper onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit}>
 				<TextField 
 					fullWidth value={name} 
 					onChange={(e) => setName(e.target.value)} 
@@ -106,17 +104,18 @@ function RecipeForm() {
 					blurb='Anything else worth noting'
 					fullWidth
 				/>
+				<Typography color='#d32f2f' sx={{marginY: errors.general ? '.5rem' : '3rem'}}>
+					{errors.general ? errors.general : ' '}
+				</Typography>
 				<Button 
 					size='large' 
 					type='submit' 
 					variant='contained' 
 					color={errors.general ? 'error' : 'primary'}
-					sx={{marginTop: '.5rem'}}
 				>
 					Submit
 				</Button> 
-				{errors.general ? <Typography color='#d32f2f' sx={{marginY: '1rem'}}>{errors.general}</Typography> : undefined}
-			</RecipeFormWrapper>
+			</form>
 		</Container>
 	);
 }

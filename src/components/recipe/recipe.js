@@ -7,6 +7,7 @@ import Ingredients from './ingredients.js';
 import Directions from './directions.js';
 import Summary from './summary.js';
 import Notes from './notes.js';
+import { Typography } from '@mui/material';
 
 function Recipe() {
 	const { recipes } = useSelector(state => state.recipes);
@@ -15,7 +16,7 @@ function Recipe() {
 	
 	return (
 		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
-			<h2>{name}</h2>
+			<Typography variant='h4' as='h2' sx={{mb: '2rem'}}>{name}</Typography>
 			<Summary />
 			<Ingredients />
 			<Directions />

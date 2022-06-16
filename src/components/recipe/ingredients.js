@@ -2,9 +2,9 @@ import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+import { Card, CardContent, CardHeader, Checkbox, Typography } from '@mui/material';
 
 const IngredientItem = styled.li`
-	color: green;
     list-style-type: none;
 `;
 
@@ -16,17 +16,10 @@ Ingredient.propTypes = {
 function Ingredient({ amount, name }) {
 	return(
 		<IngredientItem>
-			<input type="checkbox" /> {amount} {name}
+			<Typography><Checkbox size='small'/>{amount} {name}</Typography>
 		</IngredientItem>
 	);
 }
-
-const IngredientSection = styled.section`
-	color: blue;
-	ul {
-		padding-left: 10px;
-	}
-`;
 
 Ingredients.propTypes = {
 	ingredients: PropTypes.arrayOf(
@@ -43,14 +36,16 @@ function Ingredients() {
 	const ingredients = JSON.parse(recipes.data[0].ingredients);
 
 	return(
-		<IngredientSection>
-			<h3>Ingredients</h3	>
-			<ul>
-				{ingredients.map((ingredient, i) => {
-					return <Ingredient key={'ingredient' + i} {...ingredient}/>;
-				})}
-			</ul>
-		</IngredientSection>
+		<Card sx={{p: '.5rem', mt: '2rem', pb: '0'}}>
+			<CardHeader title='Ingredients' sx={{ pb: '.2rem'}}/>
+			<CardContent sx={{pt: '0', pl: '0' }}>
+				<ul>
+					{ingredients.map((ingredient, i) => {
+						return <Ingredient key={'ingredient' + i} {...ingredient}/>;
+					})}
+				</ul>
+			</CardContent>
+		</Card>
 	);
 }
 

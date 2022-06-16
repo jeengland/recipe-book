@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
+import { TextField } from '@mui/material';
 
-import { minutesToTimeStamp, timeStampToMinutes, validateTimestamp } from '../../utils/timeUtils';
-
-const Time = styled.input`
-	color: goldenrod
-`;
-
+import { minutesToTimeStamp, timeStampToMinutes, validateTimestamp } from '../../utils/timeUtils.js';
+import { sentenceCase } from '../../utils/textUtils.js';
+ 
 TimeInput.propTypes = {
 	label: PropTypes.string,
 	name: PropTypes.string,
+	styles: PropTypes.objectOf(
+		PropTypes.string
+	),
 	state: PropTypes.objectOf(
 		PropTypes.oneOfType([
 			PropTypes.string,
@@ -21,7 +21,7 @@ TimeInput.propTypes = {
 	setState: PropTypes.func
 };
 
-function TimeInput({ label, name, state, setState }) {
+function TimeInput({ name, styles, state, setState }) {
 	const [err, setErr] = useState(''),
 		time = state[name];
 
@@ -43,13 +43,22 @@ function TimeInput({ label, name, state, setState }) {
 	};
 
 	const incrementTime = (increment) => {
+		setErr('');
 		let currentTime = timeStampToMinutes(time);
 
-		currentTime +=  increment;
+		if (increment < 0) {
+			currentTime = Math.floor((currentTime + increment) / increment) * increment;
+		}
+
+		if (increment > 0) {
+			currentTime = Math.floor((currentTime + increment) / increment) * increment;
+		}
 
 		if (currentTime <= 0) {
 			currentTime = 0;
 		}
+
+		
 
 		const newTime = {...state};
 
@@ -61,12 +70,21 @@ function TimeInput({ label, name, state, setState }) {
 	};
 
 	const handleKeyDown = (e) => {
+		const shift = e.shiftKey;
 		switch (e.keyCode) {
 		case 38:
-			incrementTime(15);
+			if (shift) {
+				incrementTime(1);
+			} else {
+				incrementTime(15);
+			}
 			break;
 		case 40:
-			incrementTime(-15);
+			if (shift) {
+				incrementTime(-1);
+			} else {
+				incrementTime(-15);
+			}
 			break;
 		}
 
@@ -74,11 +92,16 @@ function TimeInput({ label, name, state, setState }) {
 	};
 
 	return (
-		<>
-			{ err ? <p>{err}</p> : undefined}
-			<label htmlFor={name}>{label}</label>
-			<Time name={name} id={name} type='text' value={time} onChange={handleChange} onKeyDown={handleKeyDown}/>
-		</>
+		<TextField 
+			error={!!err}
+			helperText={err || ' '} 
+			name={name} id={name} 
+			label={sentenceCase(name)} 
+			type='text' value={time} 
+			onChange={handleChange} 
+			onKeyDown={handleKeyDown}
+			sx = { styles }
+		/>
 	);
 }
 

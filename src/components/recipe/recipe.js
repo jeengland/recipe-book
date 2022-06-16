@@ -1,15 +1,13 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
+
+import { Container } from '@mui/system';
 
 import Ingredients from './ingredients.js';
 import Directions from './directions.js';
 import Summary from './summary.js';
 import Notes from './notes.js';
-
-const RecipeDiv = styled.div`
-	color: pink;
-`;
+import { Typography } from '@mui/material';
 
 function Recipe() {
 	const { recipes } = useSelector(state => state.recipes);
@@ -17,13 +15,13 @@ function Recipe() {
 	const name= recipes.data[0].name;
 	
 	return (
-		<RecipeDiv>
-			<h2>{name}</h2>
+		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
+			<Typography variant='h4' as='h2' sx={{mb: '2rem'}}>{name}</Typography>
 			<Summary />
 			<Ingredients />
 			<Directions />
 			<Notes />
-		</RecipeDiv>
+		</Container>
 	);
 }
 

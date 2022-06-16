@@ -1,10 +1,7 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 
-const NotesSection = styled.section`
-	color: goldenrod;
-`;
+import { Card, CardContent, CardHeader, List, ListItem, Typography } from '@mui/material';
 
 function Notes() {
 	const { recipes } = useSelector(state => state.recipes);
@@ -16,15 +13,22 @@ function Notes() {
 	}
 	
 	return (
-		<NotesSection>
-			<h3>Notes</h3>
-			{notes.length === 1 
-				? <p>{notes[0]}</p> : 
-				<ul>
-					{notes.map((note, i) => <li key={'note' + i}>{note}</li>)}
-				</ul>
-			}
-		</NotesSection>
+		<Card sx={{p: '.5rem', mt: '2rem', pb: '0'}}>
+			<CardHeader title='Notes' sx={{ pb: '.2rem'}}/>
+			<CardContent sx={{pt: '.2rem', pl: '1.5rem'}}>
+				<List>
+					{notes.map((note, i) => {
+						return (
+							<ListItem key={'note' + i} sx={{ listStyle: 'disc' }}>
+								<Typography fontSize='large'>
+									<Typography as='span' fontSize='26px' sx={{display: 'inline'}}>•</Typography> {note}
+								</Typography>
+							</ListItem>
+						);
+					})}
+				</List>
+			</CardContent>	
+		</Card>
 	);
 }
 

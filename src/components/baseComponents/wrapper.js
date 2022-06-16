@@ -1,16 +1,22 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { Container } from '@mui/material';
 
 import Header from './header';
 import Footer from './footer';
 
 function Wrapper() {
+	const pages = [
+		{href: '/recipe', text: 'Recipe'},
+		{href: '/recipeForm', text: 'Recipe Form'}
+	];
+
 	return (
-		<>
-			<Header />
+		<Container maxWidth='lg' sx={{minHeight: '90vh', paddingX: '0'}} disableGutters>
+			<Header pages={pages}/>
 			<Outlet />
-			<Footer />
-		</>
+			<Footer pages={pages}/>
+		</Container>
 	);
 }
 

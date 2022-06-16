@@ -42,8 +42,8 @@ function validateTimestamp(timestamp) {
 		}
 
 		if (timestampSplit[1].length > 2) {
-			console.error('Invalid timestamp: minutes may not be more than three characters');
-			return {err: 'Minutes may not be more than three characters'};
+			console.error('Invalid timestamp: minutes may not exceed three characters');
+			return {err: 'Minutes may not exceed three characters'};
 		}
 	}
 

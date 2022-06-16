@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+
+import { Container } from '@mui/system';
+
 import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
+import { Button, TextField, Typography } from '@mui/material';
 
-const RecipeFormWrapper = styled.form`
-	color: pink;
-`;
 
 function RecipeForm() {
 	const [name, setName] = useState(''),
-		[summary, setSummary] = useState({prepTime: '0:00', cookTime: '0:00', additionalTime: '0:00', servings: 0}),
+		[summary, setSummary] = useState({preheat: 0, prepTime: '0:00', cookTime: '0:00', additionalTime: '0:00', servings: 0}),
 		[ingredients, setIngredients] = useState([{amount: '', name: ''}]),
 		[directions, setDirections] = useState([{text: ''}]),
 		[notes, setNotes] = useState([{text: ''}]),
@@ -58,23 +59,64 @@ function RecipeForm() {
 			return;
 		}
 
+		// #TODO: Add real submit lol
 		console.log('submit', bundle);
 	};
 
 	return (
-		<>
-			<RecipeFormWrapper onSubmit={handleSubmit}>
-				{errors.name ? <p>{errors.name}</p> : undefined } 
-				<label htmlFor='name'>Name</label>
-				<input type='text' name='name' value={name} onChange={(e) => setName(e.target.value)}></input>
+		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
+			<form onSubmit={handleSubmit}>
+				<TextField 
+					fullWidth value={name} 
+					onChange={(e) => setName(e.target.value)} 
+					id='name' 
+					label='Recipe Name' 
+					variant='filled' 
+					error={!!errors.name} 
+					helperText={errors.name || ' '}
+					InputProps={{ style: { fontSize: 24 } }}
+					InputLabelProps={{ style: { fontSize: 18 }}}
+					sx={{ marginTop: '2rem'}}
+				/>
 				<SummaryForm state={summary} setState={setSummary} />
-				<InputList listType='ingredients' state={ingredients} setState={setIngredients} schema={{amount: '', name: ''}} error={errors.ingredients}/>
-				<InputList listType='directions' state={directions} setState={setDirections} schema={{text: ''}} error={errors.directions}/>
-				<InputList listType='notes' state={notes} setState={setNotes} schema={{text: ''}}/>
-				<button type='submit'>Submit</button> 
-				{errors.general ? <p>{errors.general}</p> : undefined}
-			</RecipeFormWrapper>
-		</>
+				<InputList 
+					listType='ingredients' 
+					state={ingredients} 
+					setState={setIngredients} 
+					schema={{amount: '', name: ''}}
+					error={errors.ingredients}
+					blurb='Amounts and names of all ingredients needed'
+				/>
+				<InputList 
+					listType='directions' 
+					state={directions} 
+					setState={setDirections} 
+					schema={{text: ''}} 
+					error={errors.directions} 
+					blurb='Everything needed to ensure a successful meal'
+					fullWidth
+				/>
+				<InputList 
+					listType='notes' 
+					state={notes} 
+					setState={setNotes} 
+					schema={{text: ''}} 
+					blurb='Anything else worth noting'
+					fullWidth
+				/>
+				<Typography color='#d32f2f' sx={{marginY: errors.general ? '.5rem' : '3rem'}}>
+					{errors.general ? errors.general : ' '}
+				</Typography>
+				<Button 
+					size='large' 
+					type='submit' 
+					variant='contained' 
+					color={errors.general ? 'error' : 'primary'}
+				>
+					Submit
+				</Button> 
+			</form>
+		</Container>
 	);
 }
 

@@ -1,27 +1,7 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
-const DirectionItem = styled.li`
-	color: purple;
-`;
-
-Direction.propTypes = {
-	direction: PropTypes.string
-};
-
-function Direction({direction}) {
-	return (
-		<DirectionItem>
-			{direction}
-		</DirectionItem>
-	);
-}
-
-const DirectionsSection = styled.section`
-	color: red;
-`;
+import { Card, CardContent, CardHeader, List, ListItem, Typography } from '@mui/material';
 
 Directions.propTypes = {
 	directions: PropTypes.arrayOf(
@@ -35,14 +15,22 @@ function Directions() {
 	const directions = JSON.parse(recipes.data[0].directions);
 
 	return(
-		<DirectionsSection>
-			<h3>Directions</h3	>
-			<ol>
-				{directions.map((direction, i) => {
-					return <Direction key={'direction' + i} direction={direction}/>;
-				})}
-			</ol>
-		</DirectionsSection>
+		<Card sx={{p: '.5rem', mt: '2rem', pb: '0'}}>
+			<CardHeader title='Directions' sx={{ pb: '.2rem'}}/>
+			<CardContent sx={{pt: '.2rem', pl: '1.5rem'}}>
+				<List>
+					{directions.map((direction, i) => {
+						return (
+							<ListItem key={'direction' + i}>
+								<Typography fontSize='large'>
+									{i + 1}. {direction}
+								</Typography>
+							</ListItem>
+						);
+					})}
+				</List>
+			</CardContent>	
+		</Card>
 	);
 }
 

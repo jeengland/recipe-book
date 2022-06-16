@@ -8,6 +8,7 @@ import RecipeForm from './components/recipeForm/recipeForm.js';
 import Wrapper from './components/baseComponents/wrapper.js';
 
 import { fetchRecipes } from './store/slices/recipesSlice.js';
+import { CircularProgress } from '@mui/material';
 
 function App() {
 	const { isLoading, recipes } = useSelector(state => state.recipes);
@@ -20,7 +21,9 @@ function App() {
 
 	if (isLoading || recipes.length === 0) {
 		return (
-			<h1>Loading</h1>
+			<>
+				<CircularProgress />
+			</>
 		);
 	}
 

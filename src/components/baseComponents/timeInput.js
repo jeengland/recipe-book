@@ -9,6 +9,9 @@ import { sentenceCase } from '../../utils/textUtils.js';
 TimeInput.propTypes = {
 	label: PropTypes.string,
 	name: PropTypes.string,
+	styles: PropTypes.objectOf(
+		PropTypes.string
+	),
 	state: PropTypes.objectOf(
 		PropTypes.oneOfType([
 			PropTypes.string,
@@ -18,7 +21,7 @@ TimeInput.propTypes = {
 	setState: PropTypes.func
 };
 
-function TimeInput({ name, state, setState }) {
+function TimeInput({ name, styles, state, setState }) {
 	const [err, setErr] = useState(''),
 		time = state[name];
 
@@ -89,10 +92,16 @@ function TimeInput({ name, state, setState }) {
 	};
 
 	return (
-		<>
-			{/* { err ? <p>{err}</p> : undefined} */}
-			<TextField error={err} helperText={err} name={name} id={name} label={sentenceCase(name)} type='text' value={time} onChange={handleChange} onKeyDown={handleKeyDown}/>
-		</>
+		<TextField 
+			error={!!err}
+			helperText={err || ' '} 
+			name={name} id={name} 
+			label={sentenceCase(name)} 
+			type='text' value={time} 
+			onChange={handleChange} 
+			onKeyDown={handleKeyDown}
+			sx = { styles }
+		/>
 	);
 }
 

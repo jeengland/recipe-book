@@ -14,7 +14,7 @@ function Recipe() {
 	const name= recipes.data[0].name;
 	
 	return (
-		<Container>
+		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
 			<h2>{name}</h2>
 			<Summary />
 			<Ingredients />

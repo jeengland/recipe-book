@@ -12,7 +12,7 @@ function Wrapper() {
 	];
 
 	return (
-		<Container maxWidth='md' sx={{minHeight: '100vh'}}>
+		<Container maxWidth='lg' sx={{minHeight: '90vh', paddingX: '0'}} disableGutters>
 			<Header pages={pages}/>
 			<Outlet />
 			<Footer pages={pages}/>

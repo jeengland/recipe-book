@@ -5,7 +5,7 @@ import { Container } from '@mui/system';
 
 import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 
 const RecipeFormWrapper = styled.form`
 	color: pink;
@@ -13,7 +13,7 @@ const RecipeFormWrapper = styled.form`
 
 function RecipeForm() {
 	const [name, setName] = useState(''),
-		[summary, setSummary] = useState({prepTime: '0:00', cookTime: '0:00', additionalTime: '0:00', servings: 0}),
+		[summary, setSummary] = useState({preheat: 0, prepTime: '0:00', cookTime: '0:00', additionalTime: '0:00', servings: 0}),
 		[ingredients, setIngredients] = useState([{amount: '', name: ''}]),
 		[directions, setDirections] = useState([{text: ''}]),
 		[notes, setNotes] = useState([{text: ''}]),
@@ -66,7 +66,7 @@ function RecipeForm() {
 	};
 
 	return (
-		<Container sx={{minHeight: '80vh', paddingY: '1rem'}}>
+		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
 			<RecipeFormWrapper onSubmit={handleSubmit}>
 				<TextField 
 					fullWidth value={name} 
@@ -74,8 +74,11 @@ function RecipeForm() {
 					id='name' 
 					label='Recipe Name' 
 					variant='filled' 
-					error={errors.name} 
-					helperText={errors.name}
+					error={!!errors.name} 
+					helperText={errors.name || ' '}
+					InputProps={{ style: { fontSize: 24 } }}
+					InputLabelProps={{ style: { fontSize: 18 }}}
+					sx={{ marginTop: '2rem'}}
 				/>
 				<SummaryForm state={summary} setState={setSummary} />
 				<InputList 
@@ -103,8 +106,16 @@ function RecipeForm() {
 					blurb='Anything else worth noting'
 					fullWidth
 				/>
-				<Button type='submit' variant='contained'>Submit</Button> 
-				{errors.general ? <p>{errors.general}</p> : undefined}
+				<Button 
+					size='large' 
+					type='submit' 
+					variant='contained' 
+					color={errors.general ? 'error' : 'primary'}
+					sx={{marginTop: '.5rem'}}
+				>
+					Submit
+				</Button> 
+				{errors.general ? <Typography color='#d32f2f' sx={{marginY: '1rem'}}>{errors.general}</Typography> : undefined}
 			</RecipeFormWrapper>
 		</Container>
 	);

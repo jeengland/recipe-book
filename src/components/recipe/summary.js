@@ -31,6 +31,7 @@ function Summary() {
 			{data.additionalTime ? <p>Additional time: {getHoursMinutes(data.additionalTime)}</p> : undefined}
 			{totalTime ? <p>Total time: {getHoursMinutes(totalTime)}</p> : undefined}
 			{data.servings ? <p>Servings: {data.servings}</p> : undefined}
+			{data.preheat ? <p>Preheat Temperature: {data.preheat}°</p> : undefined}
 		</SummarySection>
 	);
 }

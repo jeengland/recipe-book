@@ -5,6 +5,9 @@ import { Container } from '@mui/system';
 import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
 import { Button, TextField, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { uploadRecipe } from '../../store/slices/recipesSlice';
+import { timeStampToMinutes } from '../../utils/timeUtils';
 
 
 function RecipeForm() {
@@ -15,6 +18,8 @@ function RecipeForm() {
 		[notes, setNotes] = useState([{text: ''}]),
 		[errors, setErrors] = useState({});
 
+	const dispatch = useDispatch();
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -24,9 +29,15 @@ function RecipeForm() {
 
 		const bundle = {
 			name,
-			summary,
-			ingredients
+			ingredients,
+			summary: {}
 		};
+
+		for (let entry in summary) {
+			if (typeof entry === 'string') {
+				bundle.summary[entry] = timeStampToMinutes(summary[entry]);
+			}
+		}
 
 		bundle.directions = directions.map(direction => direction.text).filter(direction => direction.length > 0);
 		bundle.notes = notes.map(note => note.text).filter(note => note.length > 0);
@@ -58,8 +69,13 @@ function RecipeForm() {
 			return;
 		}
 
-		// #TODO: Add real submit lol
-		console.log('submit', bundle);
+		for (let key in bundle) {
+			if (typeof bundle[key] !== 'string') {
+				bundle[key] = JSON.stringify(bundle[key]);
+			}
+		}
+
+		dispatch(uploadRecipe(bundle));
 	};
 
 	return (

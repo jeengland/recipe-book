@@ -1,12 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { PropTypes } from 'prop-types';
 
 import { Card, CardContent, CardHeader, List, ListItem, Typography } from '@mui/material';
 
-function Notes() {
+Notes.propTypes = {
+	id: PropTypes.string
+};
+
+function Notes({ id }) {
 	const { recipes } = useSelector(state => state.recipes);
 
-	const notes = JSON.parse(recipes.data[0].notes);
+	const notes = JSON.parse(recipes[id].notes);
 
 	if (notes.length === 0) {
 		return undefined;
@@ -19,7 +24,7 @@ function Notes() {
 				<List>
 					{notes.map((note, i) => {
 						return (
-							<ListItem key={'note' + i} sx={{ listStyle: 'disc' }}>
+							<ListItem key={'note' + i} sx={{ listStyle: 'disc', py: '0' }}>
 								<Typography fontSize='large'>
 									<Typography as='span' fontSize='26px' sx={{display: 'inline'}}>•</Typography> {note}
 								</Typography>

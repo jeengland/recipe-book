@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Recipe from './components/recipe/recipe.js';
 import RecipeForm from './components/recipeForm/recipeForm.js';
@@ -31,7 +31,8 @@ function App() {
 		<Routes>
 			<Route path='/' element={<Wrapper/>}>
 				<Route path='/' element={<Recipe />}/>
-				<Route path='/recipe' element={<Recipe />} />
+				<Route path='/recipe' element={<Navigate to='/recipe/1'/>}/>
+				<Route path='/recipe/:id' element={<Recipe />} />
 				<Route path='/recipeForm' element={<RecipeForm />} />
 			</Route>
 		</Routes>

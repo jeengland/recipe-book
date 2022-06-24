@@ -7,15 +7,15 @@ import { Card, CardContent, CardHeader, Typography } from '@mui/material';
 import { getHoursMinutes } from '../../utils/timeUtils.js';
 
 Summary.propTypes = {
-	data: PropTypes.objectOf(
-		PropTypes.number
-	)
+	id: PropTypes.string
 };
 
-function Summary() {
+function Summary({ id }) {
 	const { recipes } = useSelector(state => state.recipes);
 
-	const data = JSON.parse(recipes.data[0].summary);
+	const data = JSON.parse(recipes[id].summary);
+
+	console.log(data);
 
 	const totalTime = (data?.cookTime || 0) + (data?.prepTime || 0) + (data?.additionalTime || 0);
 

@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 		})
 		.catch(err => {
 			res.status(400).json({
-				error: err
+				message:  err
 			});
 		});
 });
@@ -26,13 +26,13 @@ router.get('/:id', (req, res) => {
 				});
 			} else {
 				res.status(404).json({
-					error: `Could not find recipe by id "${id}"`
+					message:  `Could not find recipe by id "${id}"`
 				});
 			}
 		})
 		.catch(err => {
 			res.status(500).json({
-				error: err
+				message:  err
 			});
 		});
 });
@@ -48,7 +48,7 @@ router.post('/', (req, res) => {
 		})
 		.catch(err => {
 			res.status(400).json({
-				error: err
+				message:  err
 			});
 		});
 });
@@ -69,15 +69,15 @@ router.put('/:id', (req, res) => {
 					})
 					.catch(err => {
 						res.status(400).json({
-							error: err
+							message:  err
 						});
 					});
 			} else {
-				res.status(404).json({ error: `Could not find recipe by id "${id}"` });
+				res.status(404).json({ message:  `Could not find recipe by id "${id}"` });
 			}
 		})
 		.catch(err => {
-			res.status(500).json({ error: err });
+			res.status(500).json({ message:  err });
 		});
 });
 
@@ -89,11 +89,11 @@ router.delete('/:id', (req, res) => {
 			if (deleted) {
 				res.json({ removed: deleted });
 			} else {
-				res.status(404).json({ error: `Could not find recipe by id "${id}"` });
+				res.status(404).json({ message:  `Could not find recipe by id "${id}"` });
 			}
 		})
 		.catch(err => {
-			res.status(500).json({ error: err });
+			res.status(500).json({ message:  err });
 		});
 });
 

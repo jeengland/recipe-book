@@ -22,18 +22,13 @@ function Ingredient({ amount, name }) {
 }
 
 Ingredients.propTypes = {
-	ingredients: PropTypes.arrayOf(
-		PropTypes.shape({
-			name: PropTypes.string,
-			amount: PropTypes.string
-		})
-	)
+	id: PropTypes.string
 };
 
-function Ingredients() {
+function Ingredients({ id }) {
 	const { recipes } = useSelector(state => state.recipes);
 
-	const ingredients = JSON.parse(recipes.data[0].ingredients);
+	const ingredients = JSON.parse(recipes[id].ingredients);
 
 	return(
 		<Card sx={{p: '.5rem', mt: '2rem', pb: '0'}}>

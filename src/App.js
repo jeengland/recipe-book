@@ -7,6 +7,7 @@ import Recipe from './components/recipe/recipe.js';
 import RecipeForm from './components/recipeForm/recipeForm.js';
 import Wrapper from './components/baseComponents/wrapper.js';
 import Recipes from './components/recipes/recipes.js';
+import EditForm from './components/recipeForm/editform.js';
 
 import { fetchRecipes } from './store/slices/recipesSlice.js';
 import { CircularProgress } from '@mui/material';
@@ -35,6 +36,7 @@ function App() {
 				<Route path='/recipes' element = {<Recipes />}/>
 				<Route path='/recipe' element={<Navigate to='/recipe/1'/>}/>
 				<Route path='/recipe/:id' element={<Recipe />} />
+				<Route path='/recipe/:id/edit' element={<EditForm />} />
 				<Route path='/recipeForm' element={<RecipeForm />} />
 			</Route>
 		</Routes>

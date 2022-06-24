@@ -6,6 +6,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Recipe from './components/recipe/recipe.js';
 import RecipeForm from './components/recipeForm/recipeForm.js';
 import Wrapper from './components/baseComponents/wrapper.js';
+import Recipes from './components/recipes/recipes.js';
 
 import { fetchRecipes } from './store/slices/recipesSlice.js';
 import { CircularProgress } from '@mui/material';
@@ -31,6 +32,7 @@ function App() {
 		<Routes>
 			<Route path='/' element={<Wrapper/>}>
 				<Route path='/' element={<Recipe />}/>
+				<Route path='/recipes' element = {<Recipes />}/>
 				<Route path='/recipe' element={<Navigate to='/recipe/1'/>}/>
 				<Route path='/recipe/:id' element={<Recipe />} />
 				<Route path='/recipeForm' element={<RecipeForm />} />

@@ -5,7 +5,9 @@ const slice = createSlice({
 	name: 'recipes',
 	initialState: {
 		recipes: [],
+		uploadedRecipe: '',
 		isLoading: false,
+		isUploading: false,
 		error: false
 	},
 	reducers: {
@@ -17,21 +19,46 @@ const slice = createSlice({
 			state.isLoading = false;
 		},
 		recipesSuccess: (state, action) => {
-			state.recipes = action.payload;
+			const newRecipes = {};
+
+			for (let i in action.payload.data) {
+				let recipe = action.payload.data[i];
+				newRecipes[recipe.id] = recipe;
+			}
+
+			state.recipes = newRecipes;
 			state.isLoading = false;
+		},
+		startUploading: (state) => {
+			state.isUploading = true;
+		},
+		uploadSuccess: (state, action) => {
+			state.uploadedRecipe = action.payload;
+			state.isUploading = false;
 		}
 	}
 });
 
 export default slice.reducer;
 
-const { recipesSuccess, startLoading, hasError } = slice.actions;
+const { recipesSuccess, startLoading, startUploading, uploadSuccess, hasError } = slice.actions;
 
 export const fetchRecipes = () => async dispatch => {
 	dispatch(startLoading());
 	try {
 		await api.get('/api/recipes')
 			.then(res => dispatch(recipesSuccess(res.data)));
+	} catch (err) {
+		dispatch(hasError(err.message));
+	}
+};
+
+export const uploadRecipe = (recipe) => async dispatch => {
+	dispatch(startUploading());
+	try {
+		await api.post('/api/recipes', recipe)
+			.then(res => dispatch(uploadSuccess(res.data)))
+			.then(fetchRecipes());
 	} catch (err) {
 		dispatch(hasError(err.message));
 	}

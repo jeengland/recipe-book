@@ -7,8 +7,8 @@ import Footer from './footer';
 
 function Wrapper() {
 	const pages = [
-		{href: '/recipe', text: 'Recipe'},
-		{href: '/recipeForm', text: 'Recipe Form'}
+		{href: '/recipes', text: 'Recipes'},
+		{href: '/recipeForm', text: 'Add Recipe'}
 	];
 
 	return (

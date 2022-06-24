@@ -21,7 +21,9 @@ function addRecipe(recipe) {
 }
 
 function updateRecipe(id, changes) {
-	return db('recipes').where({ id }).update(changes);
+	return db('recipes')
+		.where({ id })
+		.update(changes);
 }
 
 function removeRecipe(id) {

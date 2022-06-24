@@ -54,12 +54,13 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-	const id = req.params,
+	const { id }  = req.params,
 		changes = req.body;
 
 	db.getRecipeById(id)
 		.then(recipe => {
-			if (recipe) {
+			console.log(recipe);
+			if (recipe[0]) {
 				db.updateRecipe(id, changes)
 					.then(updatedRecipe => {
 						res.status(200).json({

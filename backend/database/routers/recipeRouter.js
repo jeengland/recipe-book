@@ -59,7 +59,6 @@ router.put('/:id', (req, res) => {
 
 	db.getRecipeById(id)
 		.then(recipe => {
-			console.log(recipe);
 			if (recipe[0]) {
 				db.updateRecipe(id, changes)
 					.then(updatedRecipe => {

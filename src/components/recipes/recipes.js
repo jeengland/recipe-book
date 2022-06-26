@@ -9,7 +9,6 @@ import { AccessTime } from '@mui/icons-material';
 
 import { getHoursMinutes } from '../../utils/timeUtils';
 
-
 RecipeCard.propTypes = {
 	recipe: PropTypes.objectOf(
 		PropTypes.oneOfType([
@@ -46,8 +45,8 @@ function RecipeCard({ recipe }) {
 				flexWrap: 'wrap',
 				justifySelf: 'flex-end'
 			}}>
-				<AccessTime /> 
-				<Typography sx={{ ml: '.2rem' }}>{getHoursMinutes(activeTime)}</Typography>
+				{activeTime ? <AccessTime /> : undefined }
+				<Typography sx={{ ml: '.2rem' }}>{activeTime ? getHoursMinutes(activeTime) : ' '}</Typography>
 			</CardContent>
 		</Card>
 	);
@@ -72,7 +71,8 @@ function Recipes() {
 				minHeight: '90vh', 
 				display: 'flex',
 				flexDirection: 'row',
-				flexWrap: 'wrap'
+				flexWrap: 'wrap',
+				alignContent: 'flex-start'
 			}}>
 				{recipeData.map(recipe => {
 					return (<RecipeCard key={recipe.id} recipe={recipe}/>);

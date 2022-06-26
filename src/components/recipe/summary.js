@@ -15,8 +15,6 @@ function Summary({ id }) {
 
 	const data = JSON.parse(recipes[id].summary);
 
-	console.log(data);
-
 	const totalTime = (data?.cookTime || 0) + (data?.prepTime || 0) + (data?.additionalTime || 0);
 
 	return (

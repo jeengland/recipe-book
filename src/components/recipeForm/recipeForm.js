@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container } from '@mui/system';
+import { Button, TextField, Typography } from '@mui/material';
 
 import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
-import { Button, TextField, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { uploadRecipe } from '../../store/slices/recipesSlice';
+import { uploadRecipe, fetchRecipes } from '../../store/slices/recipesSlice';
 import { timeStampToMinutes } from '../../utils/timeUtils';
 
 
@@ -18,10 +19,22 @@ function RecipeForm() {
 		[notes, setNotes] = useState([{text: ''}]),
 		[errors, setErrors] = useState({});
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch(),
+		navigate = useNavigate();
+
+	const error = useSelector(state => state.error);
+	let isUploading = false;
+
+	useEffect(() => {
+		if (error) {
+			isUploading = false;
+		}
+	}, [error]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		isUploading = true;
 
 		const newErrors = {};
 
@@ -34,8 +47,17 @@ function RecipeForm() {
 		};
 
 		for (let entry in summary) {
-			if (typeof entry === 'string') {
-				bundle.summary[entry] = timeStampToMinutes(summary[entry]);
+			if (typeof summary[entry] === 'string') {
+				const value = timeStampToMinutes(summary[entry]);
+
+				if (value) {
+					bundle.summary[entry] = value;
+				}
+			} else {
+				const value = summary[entry];
+				if (value) {
+					bundle.summary[entry];
+				}
 			}
 		}
 
@@ -75,11 +97,26 @@ function RecipeForm() {
 			}
 		}
 
-		dispatch(uploadRecipe(bundle));
+		dispatch(uploadRecipe(bundle))
+			.then((res) => {
+				if (res.error) {
+					setErrors({general: 'Error deleting, please try again'});
+				} else if (res.meta.requestStatus === 'fulfilled') {
+					var nextId = res.payload.data[0];
+					dispatch(fetchRecipes())
+						.then(() => {
+							navigate(`/recipe/${nextId}`);
+						});
+
+				} else {
+					setErrors({general: 'Unknown error, please try again'});
+				}
+			});
 	};
 
 	return (
 		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
+			<Typography variant='h4' as='h2'>Add Recipe</Typography>
 			<form onSubmit={handleSubmit}>
 				<TextField 
 					fullWidth value={name} 
@@ -126,7 +163,9 @@ function RecipeForm() {
 					size='large' 
 					type='submit' 
 					variant='contained' 
+					onClick={(e) => e.preventDefault}
 					color={errors.general ? 'error' : 'primary'}
+					disabled={isUploading}
 				>
 					Submit
 				</Button> 

@@ -1,24 +1,56 @@
 import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container } from '@mui/system';
+import { Button, TextField, Typography } from '@mui/material';
 
 import InputList from './inputList.js';
 import SummaryForm from './summaryForm.js';
-import { Button, TextField, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { uploadRecipe } from '../../store/slices/recipesSlice';
-import { timeStampToMinutes } from '../../utils/timeUtils';
-
+import { minutesToTimeStamp, timeStampToMinutes } from '../../utils/timeUtils';
+import { fetchRecipes, updateRecipe, deleteRecipe } from '../../store/slices/recipesSlice';
 
 function EditForm() {
-	const [name, setName] = useState(''),
-		[summary, setSummary] = useState({preheat: 0, prepTime: '0:00', cookTime: '0:00', additionalTime: '0:00', servings: 0}),
-		[ingredients, setIngredients] = useState([{amount: '', name: ''}]),
-		[directions, setDirections] = useState([{text: ''}]),
-		[notes, setNotes] = useState([{text: ''}]),
+	const { recipes } = useSelector(state => state.recipes),
+		{ id } = useParams(),
+		recipeData = recipes[id];
+
+	if (!recipeData) {
+		return;
+	}
+
+	const summaryData = JSON.parse(recipeData.summary, (key, value) => {
+		switch(key) {
+		case 'prepTime':
+		case 'cookTime':
+		case 'additionalTime':
+			return minutesToTimeStamp(value);
+		default:
+			return value;
+		}
+	});
+	
+	const directionsData = [];
+	JSON.parse(recipeData.directions).forEach(direction => directionsData.push({'text': direction}));
+
+	const notesData = [];
+	JSON.parse(recipeData.notes).forEach(note => notesData.push({'text': note}));
+
+	const [name, setName] = useState(recipeData.name),
+		[summary, setSummary] = useState({
+			preheat: summaryData.preheat || 0, 
+			prepTime: summaryData.prepTime || '0:00', 
+			cookTime: summaryData.cookTime || '0:00', 
+			additionalTime: summaryData.additionalTime || '0:00', 
+			servings: summaryData.servings || 0
+		}),
+		[ingredients, setIngredients] = useState(JSON.parse(recipeData.ingredients)),
+		[directions, setDirections] = useState(directionsData),
+		[notes, setNotes] = useState(notesData),
 		[errors, setErrors] = useState({});
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch(),
+		navigate = useNavigate();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -34,8 +66,17 @@ function EditForm() {
 		};
 
 		for (let entry in summary) {
-			if (typeof entry === 'string') {
-				bundle.summary[entry] = timeStampToMinutes(summary[entry]);
+			if (typeof summary[entry] === 'string') {
+				const value = timeStampToMinutes(summary[entry]);
+
+				if (value) {
+					bundle.summary[entry] = value;
+				}
+			} else {
+				const value = summary[entry];
+				if (value) {
+					bundle.summary[entry];
+				}
 			}
 		}
 
@@ -75,11 +116,36 @@ function EditForm() {
 			}
 		}
 
-		dispatch(uploadRecipe(bundle));
+		dispatch(updateRecipe({changes: bundle, id}))
+			.then((res) => {
+				if (res.error) {
+					setErrors({general: 'Error uploading, please try again'});
+				} else if (res.meta.requestStatus === 'fulfilled') {
+					dispatch(fetchRecipes())
+						.then(() => navigate(`/recipe/${id}/`));
+				} else {
+					setErrors({general: 'Unknown error, please try again'});
+				}
+			});
+	};
+
+	const handleDelete = () => {
+		dispatch(deleteRecipe(id))
+			.then((res) => {
+				if (res.error) {
+					setErrors({general: 'Error deleting, please try again'});
+				} else if (res.meta.requestStatus === 'fulfilled') {
+					dispatch(fetchRecipes())
+						.then(() => navigate('/recipes'));
+				} else {
+					setErrors({general: 'Unknown error, please try again'});
+				}
+			});
 	};
 
 	return (
 		<Container sx={{minHeight: '90vh', paddingY: '1rem'}}>
+			<Typography variant='h4' as='h2'>Edit Recipe</Typography>
 			<form onSubmit={handleSubmit}>
 				<TextField 
 					fullWidth value={name} 
@@ -130,6 +196,16 @@ function EditForm() {
 				>
 					Submit
 				</Button> 
+				<Button 
+					size='large'
+					type='button'
+					variant='contained'
+					color='error'
+					sx={{ml: '1rem'}}
+					onClick={handleDelete}
+				>
+					Delete
+				</Button>
 			</form>
 		</Container>
 	);

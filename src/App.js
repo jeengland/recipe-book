@@ -21,7 +21,7 @@ function App() {
 		dispatch(fetchRecipes());
 	}, [dispatch]);
 
-	if (isLoading || recipes.length === 0) {
+	if (isLoading || !!recipes && recipes.length === 0) {
 		return (
 			<>
 				<CircularProgress />
@@ -34,7 +34,7 @@ function App() {
 			<Route path='/' element={<Wrapper/>}>
 				<Route path='/' element={<Recipe />}/>
 				<Route path='/recipes' element = {<Recipes />}/>
-				<Route path='/recipe' element={<Navigate to='/recipe/1'/>}/>
+				<Route path='/recipe' element={<Navigate to='/recipes'/>}/>
 				<Route path='/recipe/:id' element={<Recipe />} />
 				<Route path='/recipe/:id/edit' element={<EditForm />} />
 				<Route path='/recipeForm' element={<RecipeForm />} />

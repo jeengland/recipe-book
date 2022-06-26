@@ -7,7 +7,13 @@ const reducer = combineReducers({
 });
 
 const store = configureStore({
-	reducer
+	reducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoredActions: ['recipes/updateRecipe/fulfilled', 'recipes/deleteRecipe/fulfilled'],
+			},
+		}),
 });
 
 export default store;

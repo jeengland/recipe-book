@@ -76,7 +76,7 @@ function RecipeForm() {
 
 		if (bundle.ingredients.filter(ingredient => ingredient.name === '' || ingredient.amount === '').length > 0) {
 			newErrors.ingredients = 'All ingredients must have both a name and amount';
-			didError = true;
+			didError = true
 		}
 
 		if (bundle.directions.length === 0 || bundle.directions.length === 1 && !bundle.directions[0]) {
